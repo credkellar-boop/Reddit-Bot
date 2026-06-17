@@ -1,0 +1,21 @@
+import requests
+import os
+
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
+
+def post_to_discord(title, content):
+    """Sends a formatted message to a Discord webhook."""
+    if not DISCORD_WEBHOOK_URL:
+        return False, "Discord Webhook URL not found in .env"
+
+    message_payload = {
+        "content": f"**{title}**\n{content}",
+        "username": "Reddit-Bot Broadcaster"
+    }
+
+    try:
+        response = requests.post(DISCORD_WEBHOOK_URL, json=message_payload)
+        response.raise_for_status()
+        return True, "Successfully posted to Discord."
+    except requests.exceptions.RequestException as e:
+        return False, str(e)
