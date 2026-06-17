@@ -1,0 +1,30 @@
+import praw
+from src.config import (
+    REDDIT_CLIENT_ID, 
+    REDDIT_CLIENT_SECRET, 
+    REDDIT_USER_AGENT, 
+    REDDIT_USERNAME, 
+    REDDIT_PASSWORD
+)
+
+[span_1](start_span)def get_reddit_instance():
+    """Authenticates and returns an authorized Reddit instance."""
+    # PRAW initialization using your credentials[span_1](end_span)
+    return praw.Reddit(
+        client_id=REDDIT_CLIENT_ID,
+        client_secret=REDDIT_CLIENT_SECRET,
+        user_agent=REDDIT_USER_AGENT,
+        username=REDDIT_USERNAME,
+        password=REDDIT_PASSWORD
+    )
+
+[span_2](start_span)def post_to_reddit(subreddit_name, title, content):
+    """Submits a text post to a specific subreddit."""
+    reddit = get_reddit_instance()
+    try:
+        # Obtains the subreddit instance and submits the text post[span_2](end_span)
+        subreddit = reddit.subreddit(subreddit_name)
+        submission = subreddit.submit(title=title, selftext=content)
+        return True, submission.url
+    except Exception as e:
+        return False, str(e)
